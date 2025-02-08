@@ -26,4 +26,31 @@ def one_star(rules, updates):
             mid_pages.append(update[int(len(update)/2)])
     return sum(mid_pages)
 
+
+def two_star(rules, updates):
+    def correct_update(rules, update):
+        correct = False
+        while(not correct):
+            for r1, r2 in rules:
+                if indexOf(r1, update) == -1 or indexOf(r2, update) == -1:
+                    continue
+                elif (i1:=indexOf(r1, update)) > (i2:=indexOf(r2, update)):
+                    update[i1] = r2
+                    update[i2] = r1
+                    break
+            else:
+                correct = True
+        return update[int(len(update)/2)]
+    
+    mid_pages = []
+    for update in updates:
+        for r1, r2 in rules:
+            if indexOf(r1, update) == -1 or indexOf(r2, update) == -1:
+                continue
+            elif indexOf(r1, update) > indexOf(r2, update):
+                mid_pages.append(correct_update(rules, update))
+                break
+    return sum(mid_pages)
+
 print(one_star(rules, updates))
+print(two_star(rules, updates))
